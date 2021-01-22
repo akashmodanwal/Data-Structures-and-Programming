@@ -7,8 +7,6 @@
 *
 *purpose of program:	
 *		This program is implementation of iterative version of tower of hanoi problem's solution.
-* References:
-*	https://www.geeksforgeeks.org/iterative-tower-of-hanoi/
 **/
  
 #include <stdio.h> 
