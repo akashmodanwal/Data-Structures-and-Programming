@@ -169,6 +169,8 @@ int main()
 	unsigned num_of_disks = 3; 
 
 	struct Stack *src, *dest, *aux; 
+	printf("Tower of Hanoi Problem \n");
+	printf("A = Source Rod\t B = Auxilary Rod\tC = Destination Rod\n");
 
 	// Create three stacks of size 'num_of_disks' 
 	// to hold the disks 
