@@ -6,11 +6,11 @@
 *couse:  DSP Lab
 *
 *purpose of program:	
-*				This program is implementation of stack using Array. It performs pop and push operations.
-*				it stores all the data in Array.
+*		This program is implementation of stack using Array. It performs pop and push operations.
+*		it stores all the data in Array.
 * References:
-*			Stack data structure (Introduction and program). (2019, July 19). 
-*			GeeksforGeeks. https://www.geeksforgeeks.org/stack-data-structure-introduction-program/
+*	Stack data structure (Introduction and program). (2019, July 19). 
+*	GeeksforGeeks. https://www.geeksforgeeks.org/stack-data-structure-introduction-program/
 **/
 #include <stdio.h>
 #include <stdlib.h>
