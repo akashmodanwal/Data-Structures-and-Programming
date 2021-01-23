@@ -1,6 +1,6 @@
 /*
 *Title: Implementation of iterative tower of hanoi problem's solution
-*File : toh_iter.cpp
+*File : toh_iter.c
 *Author: Akash Modanwal
 *date:   November 2020
 *couse:  DSP Lab
@@ -12,8 +12,8 @@
 #include <stdio.h> 
 #include <math.h> 
 #include <stdlib.h> 
-#include <limits.h> 
-
+//#include <limits.h> 
+#define INT_MIN -99999
 // stack structure
 struct Stack 
 { 
