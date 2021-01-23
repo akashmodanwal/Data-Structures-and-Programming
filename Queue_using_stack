@@ -8,10 +8,6 @@
 *purpose of program:	
 *				This program is implementation of queue using stack. I
 *			
-* References:
-*			
-*			C program to implement queues using stacks. (2017, August 16). 
-*			Sanfoundry. https://www.sanfoundry.com/c-program-implement-queues-using-stacks/
 **/
 #include <stdio.h>
 #include<stdlib.h>
