@@ -6,11 +6,8 @@
 *couse:  DSP Lab
 *
 *purpose of program:	
-*				This program is implementation of Stack using Queue. It performs Pop operation by using two queues.
-*				enqueue and dequeue is used for push and pop operation for implementation of Stack.
-
-* References:
-*		
+*			This program is implementation of Stack using Queue. It performs Push operation by using two queues.
+*			enqueue and dequeue is used for push and pop operation for implementation of Stack.
 **/
 
 #include<stdio.h>
