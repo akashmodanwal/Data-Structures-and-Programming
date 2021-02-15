@@ -8,145 +8,164 @@
 *purpose of program:	
 *			It finds connected components in an undirected graph
 **/
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
-struct node   //Crate a node of struct type
-{
-      int data;
-      struct node *link;
+struct node {
+    int vertex;
+    struct node* next;
+};
+struct node* createNode(int);
+
+struct Graph {
+    int Ver;
+    struct node** adjLists;
 };
 
-struct node *arr[10];   //for text file 
-int mark_arr[10];
+struct node* createNode(int vertex) {                               // Createing node
+    struct node* newNode = malloc(sizeof(struct node));
+    newNode->vertex = vertex;
+    newNode->next = NULL;
+    return newNode;
+}
 
-
-void disp(int V)  //Function for display the Adjacency list
+struct Graph* createGraph(int Ver)                                  // Createing  graph
 {
-	printf("\nThe Adjacency List is: \n");
-	int i;
-	struct node *prober=arr[0];
-	for(i=1;i<=V;i++)
-	{
-		prober=arr[i];
-		while(prober)  //prober from beginning to end of the list
-		{
-			printf("%d->%d ",i,prober->data);   //print the Adjacency list data 
-			prober=prober->link;
-		}
-		printf("\n");
-	}
-	return;
+    int i;
+    
+    struct Graph* graph = malloc(sizeof(struct Graph));
+    graph->Ver = Ver;
+    
+    graph->adjLists = malloc(Ver * sizeof(struct node*));
+    
+    for (i = 0; i < Ver; i++)
+        graph->adjLists[i] = NULL;
+    
+    return graph;
 }
 
-
-void ConComp(int V)   //Function for count the number of connectedd components 
+void addingEdge(struct Graph* graph, int source, int destination)           // Adding  edge
 {
-	int marker=0,grpCount=1;    //marker->used for group number
-	int i;
-	
-	for(i=0;i<10;i++)           //loop for initialize mark array with 0   (0,0,0,0.......)
-		mark_arr[i]=0;
-	
-	struct node *prober=arr[0];    //initialize the first potion of prober
-	for(i=1;i<=V;i++)
-	{
-		if(mark_arr[i]==0)
-		{
-			mark_arr[i]=grpCount;   //1  1+1=2
-			grpCount++;
-		}
-		
-		marker=mark_arr[i];
-		
-		prober=arr[i];
-		while(prober)
-		{
-			if(mark_arr[prober->data]==0)     //check to see if the vertex is already mark with the gp number 
-			{
-				mark_arr[prober->data]=marker;  //the vertex with the current gp number
-				prober=prober->link;             //changed prober point to the next node
-			}
-			
-			else 
-			{
-				if(mark_arr[prober->data]<marker)    //Check to see if the current gp number is less then the vertices privious gp number
-				{
-					struct node *probe2=arr[i]; 
-					int marker2=mark_arr[prober->data]; //to set the marker with the value of lower gp number
-					while(probe2!=prober)    //changes the gp number for the whole list
-					{
-						mark_arr[probe2->data]=marker2;
-						probe2=probe2->link;
-					}
-					marker=mark_arr[prober->data];   //Change the value of marker with the old value of marker
-				}
-				else mark_arr[prober->data]=marker;  
-   				
-				prober=prober->link;
-			}	
-			
-		}
-	}
-	printf("The number of connected components is %d\n",grpCount-1);
-	return;
+    
+    struct node* newNode = createNode(destination);                         // Add edge from source to destination
+    newNode->next = graph->adjLists[source];
+    graph->adjLists[source] = newNode;
+    
+    newNode = createNode(source);                                           // Add edge from destination to source
+    newNode->next = graph->adjLists[destination];
+    graph->adjLists[destination] = newNode;
+}
+void graphPrint(struct Graph* graph)                                            //graph  printing
+{
+    int v;
+     
+    for (v = 0; v < graph->Ver; v++) 
+    {
+        struct node* temporary = graph->adjLists[v];
+        printf("\nVertex %d : ", v+1);
+        while (temporary) 
+        {
+            printf("%d -> ", temporary->vertex+1);
+            temporary = temporary->next;
+        } 
+    }
 }
 
-
-void main()     //Start the main Function
-   {  
-	
-       struct node *prober;   //traverse the list
-	int i=0,d,V,E;        //V->Vertices ,E->Edges 
-	
-	for(i=0;i<10;i++)    //Initialize the adjacency list with NULL
-	     arr[i]=NULL;
-	
-	char ch1,ch2;        //Reads the characters from input text file
-	
-	ch1 = getchar();     //Reads the first character from the input text file 
-	V=ch1-'0';           //Converts character to integer data types 
-	                     //52-48=4
-	ch1 = getchar();     //Reads the white space
-	ch2 = getchar();     //Reads the next character from the input text file 
-	E=ch2-'0';           //Converts character to integer data types 
-	ch2 = getchar();     //Reads the new line Characters 
-	
-	while(ch2!=EOF||ch1!=EOF)    //End of file character
-	{
-		ch1 = getchar();     //Reads the first character 
-		if(ch1==EOF) break;  //here we check to see the end of file
-		
-		struct node *new_node=(struct node *)malloc(sizeof(struct node)); // Dynamic memory Allocation
-		new_node->link=NULL;  
-		d=ch1-'0';
-			
-		ch2 = getchar();
-		if(ch2==EOF) break;
-	
-		ch2 = getchar();
-		if(ch2==EOF) break;
-		new_node->data=ch2-'0';   //stores the converted value into new node
-		
-		prober=arr[d];    //start form vertex 1
-		if(arr[d]!=NULL)  
-		{
-			
-			while(prober->link)
-				prober=prober->link;
-			
-			prober->link=new_node;
-			
-		}
-		else arr[d]=new_node;
-				
-		ch2=getchar(); //Reads the new line character
-	}
-
-	disp(V);   //call the display function of Adjacency list
-	ConComp(V);  // call the connected component function
-	return;
+void DepthFirstSearch(int vertex, bool visited[], struct Graph* graph)
+{ 
+    visited[vertex] = true; 
+    printf("%d ",vertex+1);
+    
+    struct node* temporary = graph->adjLists[vertex]; 
+    while (temporary) 
+    {   
+        if (!visited[temporary->vertex])
+            DepthFirstSearch(temporary->vertex, visited, graph);
+        temporary = temporary->next;
+    } 
 }
 
+void ConnectedComponents(struct Graph* graph)
+{
+    int v,c = 1;                                                    //count connected component
+    bool visited[graph->Ver]; 
+    
+    for (v = 0; v < graph->Ver; v++)                                // Mark all the vertices as not visited 
+        visited[v] = false;
+ 
+    for ( v = 0; v < graph->Ver; v++) {
+        if (visited[v] == false) 
+        {
+            printf("\nComponent: %d Vertices: ",c);                     // print all reachable vertices
+            DepthFirstSearch(v, visited, graph); 
+            c++;
+        }
+    }
+    
+    c--;   
+    printf("\n\nNumber of connected Components = %d\n", c);
+
+    if(c == 1)
+        printf("\nThe given graph is a Connected Graph\n");
+    else
+        printf("\nThe given graph is NOT a Connected Graph\n");
+
+}
+int main()                               // Driver code 
+{
+    int node,edges,i,source,destination;
+    FILE *fp1;// creating a FILE variable
+    char c[30];
+	printf("Enter Input txt file's' path  :\t");
+	gets(c);
+    fp1 = fopen(c, "r"); // open the file
+
+    if (fp1 == NULL)                                            //checking the opening of file
+    {   
+        printf("\nError : File is not found\n");               //displaying if error occur
+        exit(0); 
+    } 
+    
+    fscanf(fp1, "%d %d", &node,&edges);                         //reading nos of node and edge from file
+    printf("\nNumber of vertices read from txt : %d ",node); 
+    printf("\nNumber of edges read from txt : %d",edges); 
+    
+    if(edges > node*(node-1)/2)                                 //Validating  number of edges
+    {   
+        printf("\nInvalid number of edges");
+        return 0;
+    }
+    
+    struct Graph* graph = createGraph(node);                    //graph creation
+    
+    for(i=1;i<=edges;i++)
+    {
+        fscanf(fp1, "%d %d", &source, &destination);            //input from file
+        printf("\nEdge %d read from file between vertices: %d and %d",i,source,destination); 
+        source = source - 1;
+        destination = destination -1 ;
+
+        if((source == -1) && (destination == -1))
+            break;
+
+        if( source >= node || destination >= node || source<0 || destination<0)
+        {
+            printf("\nInvalid edge\n");
+            i--;
+        }
+        else                                     
+            addingEdge(graph, source, destination);         //Adding Edge 
+    }
+    
+                                                            //Printing Graph
+    printf("\n\nAdjacency List representation of given Undirected Graph:");
+    graphPrint(graph);
+    
+    printf("\n\nList of Connected components:\n");
+    ConnectedComponents(graph);                         //Getting Connected Components 
+    
+    return 0;
+} 
 
 
