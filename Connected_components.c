@@ -61,7 +61,7 @@ void addingEdge(struct Graph* graph, int source, int destination)           // A
 void DepthFirstSearch(int vertex, bool visited[], struct Graph* graph)
 { 
     visited[vertex] = true; 
-    printf("%d ",vertex+1);
+    printf("%d ",vertex);
     
     struct node* temporary = graph->adjLists[vertex]; 
     while (temporary) 
@@ -83,7 +83,7 @@ void ConnectedComponents(struct Graph* graph)
     for ( v = 0; v < graph->Ver; v++) {
         if (visited[v] == false) 
         {
-            printf("\nComponent: %d Vertices: ",c);                     // print all reachable vertices
+		
             DepthFirstSearch(v, visited, graph); 
             c++;
         }
@@ -130,7 +130,6 @@ int main()                               // Driver code
 
         if( source >= node || destination >= node || source<0 || destination<0)
         {
-            printf("\nInvalid edge\n");
             i--;
         }
         else                                     
@@ -139,8 +138,7 @@ int main()                               // Driver code
     
                                                             //Printing Graph
 
-    
-    printf("\n\nList of Connected components:\n");
+
     ConnectedComponents(graph);                         //Getting Connected Components 
     
     return 0;
