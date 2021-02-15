@@ -56,21 +56,7 @@ void addingEdge(struct Graph* graph, int source, int destination)           // A
     newNode->next = graph->adjLists[destination];
     graph->adjLists[destination] = newNode;
 }
-void graphPrint(struct Graph* graph)                                            //graph  printing
-{
-    int v;
-     
-    for (v = 0; v < graph->Ver; v++) 
-    {
-        struct node* temporary = graph->adjLists[v];
-        printf("\nVertex %d : ", v+1);
-        while (temporary) 
-        {
-            printf("%d -> ", temporary->vertex+1);
-            temporary = temporary->next;
-        } 
-    }
-}
+
 
 void DepthFirstSearch(int vertex, bool visited[], struct Graph* graph)
 { 
@@ -128,21 +114,14 @@ int main()                               // Driver code
     } 
     
     fscanf(fp1, "%d %d", &node,&edges);                         //reading nos of node and edge from file
-    printf("\nNumber of vertices read from txt : %d ",node); 
-    printf("\nNumber of edges read from txt : %d",edges); 
-    
-    if(edges > node*(node-1)/2)                                 //Validating  number of edges
-    {   
-        printf("\nInvalid number of edges");
-        return 0;
-    }
+ 
     
     struct Graph* graph = createGraph(node);                    //graph creation
     
     for(i=1;i<=edges;i++)
     {
         fscanf(fp1, "%d %d", &source, &destination);            //input from file
-        printf("\nEdge %d read from file between vertices: %d and %d",i,source,destination); 
+        
         source = source - 1;
         destination = destination -1 ;
 
@@ -159,8 +138,7 @@ int main()                               // Driver code
     }
     
                                                             //Printing Graph
-    printf("\n\nAdjacency List representation of given Undirected Graph:");
-    graphPrint(graph);
+
     
     printf("\n\nList of Connected components:\n");
     ConnectedComponents(graph);                         //Getting Connected Components 
